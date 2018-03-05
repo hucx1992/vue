@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta charset="UTF-8">
+    <title>www.hucxweb.com</title>
+<link rel="icon" href="http://hucxweb.com/boke/images/logo_blue.png" type="image/x-icon" />
+<style type="text/css">
+h1{
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 30px;
+    padding-top: 10px;
+}
+textarea{
+    display: inline-block;
+    width: 400px;
+    height: 150px;
+    resize: none;
+    padding: 10px;
+    font-size: 20px;
+    border: 0 none;
+}
+textarea.r{
+    background: #f0f0f0;
+}
+textarea.l{
+    border: 1px solid #f0f0f0;
+}
+textarea.l:focus,textarea.l:hover{
+    border: 1px solid #2e82ff;
+}
+.btn{
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 20px;
+}
+#fanyi{
+    text-align: center;
+    margin-bottom: 30px;
+}
+.select{
+    position: relative;
+    width: 176px;
+    height: 30px;
+    text-align: center;
+}
+.select select{
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+.select span{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    line-height: 30px;
+    background: #fff;
+    border: 1px solid #dcdcdc;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    text-align: center;
+}
+button{
+    position: relative;
+    width: 178px;
+    height: 32px;
+    text-align: center;
+    line-height: 32px;
+    background: #3B98F6;
+    border: 1px solid #0868F7;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    color: #fff;
+    text-align: center;
+    margin: 10px 0;
+}
+.t-sel{
+    margin-top: 25px;
+}
+.b-sel{
+    margin-bottom: 25px;
+}
+@media screen and (max-width: 1070px){
+    textarea{
+        display: block;
+        margin: 0 auto;
+        width: 90%;
+    }
+}
+</style>
+</head>
+<body style="background: #f9f9f9 ;">
+<h1>在线翻译</h1>
+<fanyi id = "fanyi"></fanyi>
+</div>
+<script type="text/javascript" src='http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js'></script>
+<script type="text/javascript" src="http://libs.cdnjs.net/vue/2.5.2/vue.min.js"></script>
+<script type="text/javascript" src='md5.js'></script>
+<script type="text/javascript">
+var html = `<div id = 'fanyi'>
+                <textarea class='l' v-model='fanyiContent' @input= 'fanyi'></textarea>
+                <div class='btn'>
+                    <div class='select t-sel'>
+                        <span>{{lang[from]}}</span>
+                        <select v-model = 'from'>
+                            <option :value='key' :disabled="key == to && key != 'auto'" v-for="(item, key) in lang">{{item}}</option>
+                        </select>
+                    </div>
+                    <button @click='fanyi'>翻译</button>
+                    <div class='select b-sel'>
+                        <span>{{lang[to]}}</span>
+                        <select v-model = 'to'>
+                            <option :value='key' :disabled="key == from && key != 'auto'" :selected="key == 'en'" v-for="(item, key) in lang">{{item}}</option>
+                        </select>
+                    </div>
+                </div>
+                <textarea class='r' disabled>{{fanyiCtx}}</textarea>
+            </div>`;
+
+Vue.component('fanyi',{
+    template:  html,
+    data: function(){
+        return {
+                fanyiContent: '',
+                fanyiCtx: '',
+                fanyiBool: true,
+                lang: {
+                    'auto': '自动检测',
+                    'zh': '中文',
+                    'en': '英语',
+                    'yue': '粤语',
+                    'wyw': '文言文',
+                    'jp': '日语',
+                    'kor': '韩语',
+                    'fra': '法语',
+                    'spa': '西班牙语',
+                    'th': '泰语',
+                    'ara': '阿拉伯语',
+                    'ru': '俄语',
+                    'pt': '葡萄牙语',
+                    'de': '德语',
+                    'it': '意大利语',
+                    'el': '希腊语',
+                    'nl': '荷兰语',
+                    'pl': '波兰语',
+                    'bul': '保加利亚语',
+                    'est': '爱沙尼亚语',
+                    'dan': '丹麦语',
+                    'fin': '芬兰语',
+                    'cs':  '捷克语',
+                    'rom': '罗马尼亚语',
+                    'slo': '斯洛文尼亚语',
+                    'swe': '瑞典语',
+                    'hu': '匈牙利语',
+                    'cht': '繁体中文',
+                    'vie': '越南语'
+                },
+                from: 'auto',
+                to: 'auto'
+        }
+    },
+    methods: {
+        fanyi: function(){
+            var fy;
+            clearTimeout(fy)
+            var obj = this;
+            console.log(obj.fanyiContent)
+            if(obj.fanyiContent.trim() == ''){
+                obj.fanyiCtx = ''
+                return 
+            }
+            fy = setTimeout(function(){
+
+                var appid = '2015063000000001';
+                var key = '12345678';
+                var salt = (new Date).getTime();
+                var str1 = appid + obj.fanyiContent + salt +key;
+                var sign = MD5(str1);
+
+                $.ajax({
+                    url: 'http://api.fanyi.baidu.com/api/trans/vip/translate',
+                    type: 'get',
+                    dataType: 'jsonp',
+                    data: {
+                        q: obj.fanyiContent,
+                        appid: appid,
+                        salt: salt,
+                        from: obj.from,
+                        to: obj.to,
+                        sign: sign
+                    },
+                    success: function(rlt){
+                        console.log(rlt.trans_result[0])
+                        if(obj.fanyiContent.trim() == ''){
+                            obj.fanyiCtx = ''
+                            return 
+                        }
+                        obj.fanyiCtx = rlt.trans_result[0].dst;
+                    }
+                })
+            },0)
+        },
+    }
+})
+new Vue({
+    el: '#fanyi'
+})
+</script>
+</body>
+</html>
