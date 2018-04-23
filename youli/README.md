@@ -1,6 +1,6 @@
 # youli
 
-> blue TV wap page
+> youli study APP
 
 ## Build Setup
 
