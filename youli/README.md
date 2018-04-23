@@ -1,6 +1,6 @@
 # youli
 
-> A Vue.js project
+> blue TV wap page
 
 ## Build Setup
 
