@@ -1,41 +1,54 @@
 <template>
 	<div class="sec4">
-		<Header :headerMsg="{ num: '四', title: '小组师范', subtitle: '小组备课的副标题'}"></Header>
+		<Header :headerMsg="{ num: '六', title: '小组师范', subtitle: '小组备课的副标题'}"></Header>
 		<div class="dec">
 			<div class="dec1 d"><span></span></div>
-			<div class="dec2 d">
-				<div class="msg">
-					<div class="title">第<em>{{teams[cIndex]}}</em>组</div>
-					<div class="subtitle">故事梗概</div>
-					<p>公交车终于来啦！我和大家一起依次排队上了车。车上乘客真不少，作为文明小标兵的我，今天也要保持文明乘车的仪态！</p>
-				</div>
+			<div class="npc d">
+				<span><i>系统已随机推荐一个组员成为组长，代表小组发表意见并进行投票。</i></span>
 			</div>
 			<div class="dec3 d"><span></span></div>
 		</div>
 		<div class="main">
 			<div class="icon"></div>
-			<div class="team">
-				<span v-for="(item, index) in teams" :key="index" :class="[{'check': index == cIndex},{'zb': index == (cIndex+1)}]">{{item}}
-					<i class="i0">剩余{{time}}秒</i>
-					<i class="i1">准备</i>
-				</span>
+			<div class="team" v-if="showTeam">
+				<span v-for="(item, index) in teams" :key="index" :class="{'check': index == cIndex}" @click="checkChild(index,item)">{{item}}</span>
+			</div>
+			<div class="finish" v-else>
+				<p>距离结束商议时间</p>
+				<span>剩余{{timeOut}}秒</span>
 			</div>
 		</div>
 		
+
+		<transition name="hide">
+			<div class="float" v-show="showFloat">
+				<div class="float-main">
+					<div class="light"></div>
+					<div class="float-msg">
+						<p>{{floatMsg}}</p>
+					</div>
+					<div class="btn" @click="hideFloat">好的</div>
+				</div>
+			</div>
+		</transition>
 	</div>
 </template>
 
 <script>
 import Header from './common/header'
 export default {
-	name : 'sec4',
+	name : 'sec4_1',
 	data () {
 		return {
 			teams:[1,2,3,12,5,4,9,10,5,4,9,10],
-			cIndex: 0, 	//当前位置
+			cIndex: -1, 	//点击的位置
 			time: 2,	//每小组表演时间
-			showFloat: false,
-			selected: true
+			selected: true,		//是否选择过
+			showTeam: false,		//显示小组或者商议时间
+			showFloat: true,	//显示小组组长
+			floatMsg: '你获得了组长请先发言再投票',
+			toNextPage: false, 	//是否进入下一页
+			timeOut: 10
 		}
 	},
 	components: {
@@ -44,26 +57,37 @@ export default {
 	methods: {
 		timeOutFun(){
 			const that = this;
-			if(that.time>0){
-				that.time --;
+			if(that.timeOut > 0){
+				that.timeOut --
 				setTimeout(()=>{
-					that.timeOutFun()
+					that.timeOutFun();
 				},1000)
-			} else {	
-				//答题时间超过
-				if(that.cIndex>=that.teams.length){
-					//全部小组表演完成
-					that.$store.state.ApiService.showSec ++
-					return
-				}
-				that.cIndex ++;
-				that.time = 2;
-				that.timeOutFun()
+			} else {
+				that.showTeam = true
 			}
 		},
+		hideFloat(){
+			const that = this;
+			if(that.toNextPage){
+				that.$store.state.ApiService.showSec ++
+			} else {
+				that.showFloat = false;
+			}
+		},
+		checkChild(index, item){
+			if(this.cIndex == -1){
+				this.cIndex = index;
+				this.showFloat = true;
+				this.floatMsg = '恭喜第'+item+'组获得了一票'
+				this.toNextPage = true;
+			}
+		}
 	},
 	mounted(){
-		this.timeOutFun();
+		const that = this;
+		setTimeout(()=>{
+			that.timeOutFun();
+		},1000)
 	}
 }
 </script>
@@ -299,7 +323,8 @@ export default {
 			.bg('../assets/float1.png');
 			font-size: .58rem;
 			text-align: center;
-			padding-top: 4.1rem;
+			box-sizing: border-box;
+			padding: 4.1rem 4.5rem 0;
 		}
 		.btn{
 			position: absolute;

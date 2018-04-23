@@ -82,13 +82,13 @@ export default {
 	},
 	methods: {
 		startTouch(index){
-			this.cIndex = index
+			this.cIndex = index;
 		},
 		stopTouch(){
-			this.cIndex = -1
+			this.cIndex = -1;
 		},
 		setChoose(){
-			this.$store.state.ApiService.showSec = 3
+			this.$parent.showChooseTeam = true;
 		}
 	}
 }

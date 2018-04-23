@@ -7,7 +7,8 @@
       <Sec2 v-if="$store.state.ApiService.showSec == 3"></Sec2>
       <Sec3 v-if="$store.state.ApiService.showSec == 4"></Sec3>
       <Sec4 v-if="$store.state.ApiService.showSec == 5"></Sec4>
-      <Sec5 v-if="$store.state.ApiService.showSec == 6"></Sec5>
+      <Sec4_1 v-if="$store.state.ApiService.showSec == 6"></Sec4_1>
+      <Sec5 v-if="$store.state.ApiService.showSec == 7"></Sec5>
   	</transition>
   </div>
 </template>
@@ -19,6 +20,7 @@ import Sec1 from './components/sec1'
 import Sec2 from './components/sec2'
 import Sec3 from './components/sec3'
 import Sec4 from './components/sec4'
+import Sec4_1 from './components/sec4_1'
 import Sec5 from './components/sec5'
 export default {
   name: 'App',
@@ -33,6 +35,7 @@ export default {
     Sec2,
     Sec3,
     Sec4,
+    Sec4_1,
     Sec5
   },
   methods: {

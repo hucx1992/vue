@@ -98,7 +98,7 @@ export default {
 		},
 		checked(index){
 			this.cIndex = index;
-			if(false){		//是否答对
+			if(false){		//是否答对， 设置bool
 				this.rlt = {ans: 1, msg: ''};
 			} else {
 				this.rlt = {ans: 0, msg: '你回到错误了哈哈哈'};

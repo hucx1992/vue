@@ -3,7 +3,11 @@
 		<div class="float-body">
 			<ChooseSex v-if="rlt==0"></ChooseSex>
 			<SetName v-if="rlt==1"></SetName>
-			<ChooseTeam v-if="rlt==2"></ChooseTeam>
+			<div v-if="rlt==2" class="sign-err">
+				<h3>错误</h3>
+				<p>柴可夫同学已重复登录</p>
+				<button @click="hideFloat">重新登录</button>
+			</div>
 		</div>
 	</div>
 </template>
@@ -11,8 +15,6 @@
 <script>
 import ChooseSex from "../register/chooseSex";
 import SetName from "../register/setName";
-import ChooseTeam from "../register/chooseTeam";
-import Answer from "../sec2/answer";
 export default {
 	name: 'float',
 	data () {
@@ -23,15 +25,40 @@ export default {
 	props: ['rlt'],
 	components: {
 		ChooseSex,
-		SetName,
-		ChooseTeam,
-		Answer
+		SetName
+	},
+	methhods: {
+		hideFloat(){
+		this.$parent.showFloat = false
+		}
 	}
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less">
+.sign-err{
+	h3{
+		margin-bottom: 1.5rem;
+	}
+	p{
+		font-size: .58rem;
+		text-align: center;
+	}
+	button{
+		display: block;
+		width: 4rem;
+		height: 1.38rem;
+		background: #a2c020;
+		font-size: .58rem;
+		color: #fff;
+		border-radius: .4rem;
+		border: 0 none;
+		box-shadow: 0 0 .1rem #222;
+		border: 0 none;
+		margin: .8rem auto 0;
+	}
+}
 h3{
 	font-size: .58rem;
 	line-height: .88rem;

@@ -1,14 +1,14 @@
 <template>
 	<div class="setName">
-		<div class="main" v-if="rlt.success">
+		<div class="main" v-if="success">
 			<h3>小朋友，欢迎来到智慧教室</h3>
 			<input type="" name="" placeholder="请输入姓名">
 			<div class="btn" v-if="rlt.err">
-				<button class="return">返回</button>
-				<button class="next">下一步</button>
+				<button class="return" @click="returnPage">返回</button>
+				<button class="next" @click="changeSuc">下一步</button>
 			</div>
 		</div>
-		<div class="err">
+		<div class="err" v-else>
 			<h3>错误</h3>
 			<p>{{rlt.err.txt}}</p>
 			<button>{{rlt.err.btn}}</button>
@@ -21,12 +21,26 @@ export default {
 	name : 'setName',
 	data () {
 		return {
+			success: true,		//注册是否成功
 			rlt: {
 				err: {
 					txt: '教师审核不通过，请重新注册',
 					btn: '好的'
 				}
 			}
+		}
+	},
+	methods:{
+		changeSuc(){
+			if(true){		//注册成功, 修改true
+				this.success = true;
+				this.$store.state.ApiService.showSec ++
+			} else {		//注册失败
+				this.success = false
+			}
+		},
+		returnPage(){
+			this.$parent.$parent.showFloat = false
 		}
 	}
 }

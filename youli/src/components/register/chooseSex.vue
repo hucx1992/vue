@@ -25,6 +25,7 @@ export default {
 	methods: {
 		setSex(sex){
 			this.sex = sex
+			this.$parent.$parent.rlt = 1
 		}
 	}
 }

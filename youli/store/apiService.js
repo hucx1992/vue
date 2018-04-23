@@ -4,6 +4,7 @@
 export default {
 	state: {
 		showSec: 6,
+		teamNum: '',
 	},
 	actions:{
 		toSetPlayPage(state, mid){

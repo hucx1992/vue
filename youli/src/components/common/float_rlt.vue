@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import Answer from "../sec2/answer";
 export default {
 	name: 'float',
 	data () {
@@ -28,7 +27,6 @@ export default {
 	},
 	props: ['rlt'],
 	components: {
-		Answer
 	},
 	methods: {
 		closeFloat(){

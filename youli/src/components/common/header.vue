@@ -29,7 +29,7 @@
 			</div>
 			<div class="sub-title">{{headerMsg.subtitle}}</div>
 		</div>
-		<div class="right">2</div>
+		<div class="right">{{$store.state.ApiService.teamNum}}</div>
 	</div>
 </template>
 

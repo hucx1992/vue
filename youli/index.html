@@ -8,14 +8,14 @@
   <body style="overflow: hidden;">
     <div id="app"></div>
     <script type="text/javascript">
-      setFontSize()
+      setFontSize();
       function setFontSize(){
         let w = document.body.clientWidth;
         document.getElementsByTagName('html')[0].style.fontSize = w/2560*100+'px';
-      }
+      };
       window.onresize = function () {
         setFontSize();
-      }
+      };
     </script>
     <!-- built files will be auto injected -->
   </body>

@@ -1,10 +1,10 @@
 <template>
     <div id="sign">
       <form>
-        <input type="" name="" placeholder="请输入学号">
+        <input v-model="inputMsg" type="" name="" placeholder="请输入学号">
         <button @click="signBtn">登录</button>
       </form>
-      <Float v-if="showFloat"></Float>
+      <Float v-if="showFloat" :rlt='rlt'></Float>
     </div>
 </template>
 
@@ -14,7 +14,9 @@ export default {
   name: 'sign',
   data () {
     return {
-      showFloat: false
+      showFloat: false,
+      inputMsg: '',
+      rlt: 0  //0 选择性别， 1 输入名字，2 重复登录
     }
   },
   components: {
@@ -22,6 +24,10 @@ export default {
   },
   methods: {
     signBtn () {
+      if(this.inputMsg == ''){
+        this.showFloat = true;
+        return
+      }
       this.$store.state.ApiService.showSec = 2
     }
   }
